@@ -18,15 +18,6 @@
 
 Протокол CAN обеспечивает возможность отправки команд и прием ответов между узлом диспетчеризации и несколькими исполнительными узлами
 
-#### Фото установки
-
-![Фото установки](img/prototype_photo_v1.0.jpg)
-
-#### Видео работы установки
-
-[![Видео](img/preview.jpg)](https://rutube.ru/video/private/3b8362227bf429798b91cec6fc3c6194/?p=_N369ytgunYHpl0U-GUvYw)
-
-
 #### Архитектура системы
 
 ```mermaid
@@ -56,6 +47,10 @@ flowchart LR
         Driver --> Motor
     end
 ```
+
+#### Видео работы установки
+
+[![Видео](img/preview.png)](https://rutube.ru/video/private/3b8362227bf429798b91cec6fc3c6194/?p=_N369ytgunYHpl0U-GUvYw)
 
 #### Аппаратная часть
 
@@ -226,7 +221,6 @@ flowchart LR
 
 <br>
 
-
 #### Пример
 
 Команда: `Транзакция №5. Переместить каретку Узла 1 на координату 170 мм`
@@ -257,7 +251,49 @@ flowchart LR
 0x00 | Байт 5 | Расчётная позиция: Байт 2
 0xAA | Байт 6 | Расчётная позиция: Младший байт 1 (Каретка стоит в расчётной координате 170 мм)
 
+
 <br>
+
+#### Диаграмма жизненного цикла одной транзакции (на примере команды GOTO 120 мм)
+
+```mermaid
+sequenceDiagram
+    
+    participant Master as ESP32 (Узел диспетчеризации)
+    participant Slave as STM32 (Исполнительный узел)
+
+    Note over Master, Slave: КАДР С КОМАНДОЙ
+
+    Master->>Slave: ID: 0x201, DLC: 6<br/>Токен=1 |   Код=0x02 | Координата=120
+    
+
+
+    Note over Master, Slave: МГНОВЕННЫЙ ОТВЕТ (ACK)
+
+    Slave->>Master: ID: 0x301, DLC: 7<br/>Токен=1  |  Статус=0xAA (ACK) | Состояние=0x01 (MOVING) | Координата=0
+
+   
+
+    Note over Master, Slave: ПОТОКОВАЯ ТЕЛЕМЕТРИЯ (Каждые 50 мс)
+    
+
+    Slave->>Master: ID: 0x301, DLC: 7 <br/> Токен=1 | Статус=0xAA | MOVING | Координата=1
+    
+    Slave->>Master: ...
+
+    Slave->>Master: ID: 0x301, DLC: 7 <br/> Токен=1 | Статус=0xAA | MOVING | Координата=20
+
+    Slave->>Master: ...
+
+    Slave->>Master: ID: 0x301, DLC: 7 <br/> Токен=1|Статус=0xAA | MOVING | Координата=80]
+
+    Slave->>Master: ...
+
+    Note over Master, Slave: КАДР СО СТАТУСОМ (DONE)
+    Slave->>Master: ID: 0x301, DLC: 7<br/>Токен=1 | Статус=0x55 (DONE) | Состояние=0x02 (READY) | Координата=120
+```    
+
+
 
 ## Защита и безопасность
 
