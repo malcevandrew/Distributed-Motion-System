@@ -24,7 +24,8 @@
 
 #### Видео работы установки
 
-[![Видео](img/preview.jpg)](https://cloud.mail.ru/public/4VwT/kvkoQfHiH)
+[![Видео](img/preview.jpg)](https://rutube.ru/video/private/3b8362227bf429798b91cec6fc3c6194/?p=_N369ytgunYHpl0U-GUvYw)
+
 
 #### Архитектура системы
 
