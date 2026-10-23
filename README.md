@@ -20,11 +20,11 @@
 
 #### Фото установки
 
+![Фото установки](img/prototype_photo.jpg)
 
 #### Видео работы установки
 
-[Ссылка на видео работы системы](VIDEO_LINK)
-
+[![Видео](img/preview.jpg)](https://cloud.mail.ru/public/4VwT/kvkoQfHiH)
 
 #### Архитектура системы
 
